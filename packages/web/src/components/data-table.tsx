@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { ChevronDown, ChevronUp } from "lucide-react"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -40,21 +40,23 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   // Sort data by default: ported/exclusive first (alphabetically), then not ported (alphabetically)
-  const sortedData = [...data].sort((a: any, b: any) => {
-    const statusA = a.status
-    const statusB = b.status
+  const sortedData = useMemo(() => {
+    return [...data].sort((a: any, b: any) => {
+      const statusA = a.status
+      const statusB = b.status
 
-    // Priority: ported/exclusive first, then not_ported
-    const priorityA = statusA === "not_ported" ? 0 : 1
-    const priorityB = statusB === "not_ported" ? 0 : 1
+      // Priority: ported/exclusive first, then not_ported
+      const priorityA = statusA === "not_ported" ? 0 : 1
+      const priorityB = statusB === "not_ported" ? 0 : 1
 
-    if (priorityA !== priorityB) {
-      return priorityB - priorityA // Higher priority first
-    }
+      if (priorityA !== priorityB) {
+        return priorityB - priorityA // Higher priority first
+      }
 
-    // Within same priority, sort alphabetically by name
-    return a.name.localeCompare(b.name)
-  })
+      // Within same priority, sort alphabetically by name
+      return a.name.localeCompare(b.name)
+    })
+  }, [data])
 
   const table = useReactTable({
     data: sortedData,
