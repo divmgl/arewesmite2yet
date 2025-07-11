@@ -1,0 +1,9 @@
+name = "arewesmite2yet"
+compatibility_date = "2024-07-11"
+
+[env.production.build]
+command = "bun run build"
+
+[env.production]
+# Automatically purge cache on deployment
+purge_cache = true
