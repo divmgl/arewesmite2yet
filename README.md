@@ -6,10 +6,6 @@ A website that tracks the porting status of gods from SMITE 1 to SMITE 2.
 
 [arewesmite2yet.com](https://arewesmite2yet.com)
 
-## Purpose
-
-This project helps the SMITE community understand which gods have been ported to SMITE 2, which are exclusive to SMITE 2, and which are still waiting to be ported.
-
 ## Contributing
 
 If you notice any incorrect information, missing gods, or outdated statuses, please:
@@ -40,7 +36,7 @@ packages/
 └── web/              # Main website (Astro + React)
 ```
 
-## Getting Started
+## Development
 
 ### Prerequisites
 
@@ -61,7 +57,7 @@ bun install
 bun run dev
 ```
 
-### Development Commands
+### Commands
 
 ```bash
 # Run the development server
