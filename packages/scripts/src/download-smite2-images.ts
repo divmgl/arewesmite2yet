@@ -5,6 +5,45 @@ import { pipeline } from "node:stream/promises"
 import type { God } from "@arewesmite2yet/data/types"
 import axios from "axios"
 
+interface Options {
+  dryRun: boolean
+  thumbnailsOnly: boolean
+  imagesOnly: boolean
+  godName?: string
+}
+
+function parseArgs(): Options {
+  const args = process.argv.slice(2)
+  const godIndex = args.indexOf('--god')
+  const godName = godIndex !== -1 && godIndex + 1 < args.length ? args[godIndex + 1] : undefined
+  
+  if (args.includes('--help')) {
+    console.log(`
+Usage: bun run download-smite2-images.ts [options]
+
+Options:
+  --dry-run           Preview mode - show what would be downloaded without downloading
+  --thumbnails-only   Download only thumbnails
+  --images-only       Download only full-size images  
+  --god "God Name"    Process only the specified god
+  --help              Show this help message
+
+Examples:
+  bun run download-smite2-images.ts --dry-run
+  bun run download-smite2-images.ts --god "Scylla" --thumbnails-only
+  bun run download-smite2-images.ts --god "Mercury" --dry-run
+`)
+    process.exit(0)
+  }
+  
+  return {
+    dryRun: args.includes('--dry-run'),
+    thumbnailsOnly: args.includes('--thumbnails-only'),
+    imagesOnly: args.includes('--images-only'),
+    godName
+  }
+}
+
 async function downloadImage(url: string, filepath: string): Promise<void> {
   try {
     const response = await axios({
@@ -24,9 +63,20 @@ async function downloadImage(url: string, filepath: string): Promise<void> {
 
 async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
   try {
-    console.log(
-      "🔍 Downloading ALL Smite 2 thumbnails AND full-size images from https://wiki.smite2.com/"
-    )
+    const options = parseArgs()
+    
+    // Determine what to download
+    const mode = options.thumbnailsOnly ? "thumbnails only" : 
+                 options.imagesOnly ? "full-size images only" : 
+                 "thumbnails and full-size images"
+    
+    const target = options.godName ? `for ${options.godName}` : "for all ported/exclusive gods"
+    
+    if (options.dryRun) {
+      console.log("🏃‍♂️ DRY RUN MODE - No files will be downloaded")
+    }
+    
+    console.log(`🔍 Downloading ${mode} ${target} from https://wiki.smite2.com/`)
 
     // Read gods data
     const godsPath = join(process.cwd(), "..", "data", "gods.json")
@@ -40,11 +90,11 @@ async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
       "web",
       "public",
       "images",
-      "thumbnails",
+      "gods",
       "smite2",
       "thumb"
     )
-    const smite2ImagesDir = join(process.cwd(), "..", "web", "public", "images", "gods", "smite2")
+    const smite2ImagesDir = join(process.cwd(), "..", "web", "public", "images", "gods", "smite2", "card")
     await mkdir(smite2ThumbnailsDir, { recursive: true })
     await mkdir(smite2ImagesDir, { recursive: true })
 
@@ -52,12 +102,18 @@ async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
     let downloadedThumbnails = 0
     let downloadedImages = 0
 
+    // Filter gods if specific god requested
+    const godsToProcess = options.godName 
+      ? gods.filter(god => god.name.toLowerCase() === options.godName!.toLowerCase())
+      : gods.filter(god => god.status === "ported" || god.status === "exclusive")
+
+    // Add non-processed gods to the updated list if filtering by god name
+    if (options.godName) {
+      updatedGods.push(...gods.filter(god => god.name.toLowerCase() !== options.godName!.toLowerCase()))
+    }
+
     // Process each god that is ported or exclusive
-    for (const god of gods) {
-      if (god.status !== "ported" && god.status !== "exclusive") {
-        updatedGods.push(god)
-        continue
-      }
+    for (const god of godsToProcess) {
 
       let thumbnailUrl: string | null = null
       let imageUrl: string | null = null
@@ -119,8 +175,8 @@ async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
         const imageS2Url = `/images/T_${nameVariation}S2_Default.png`
         const imageNoS2Url = `/images/T_${nameVariation}_Default.png`
 
-        // Test thumbnail URLs
-        if (!thumbnailUrl) {
+        // Test thumbnail URLs (unless images-only mode)
+        if (!thumbnailUrl && !options.imagesOnly) {
           for (const testUrl of [thumbnailS2Url, thumbnailNoS2Url]) {
             try {
               const testResponse = await axios.head(`https://wiki.smite2.com${testUrl}`, {
@@ -137,8 +193,8 @@ async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
           }
         }
 
-        // Test full-size image URLs
-        if (!imageUrl) {
+        // Test full-size image URLs (unless thumbnails-only mode)
+        if (!imageUrl && !options.thumbnailsOnly) {
           for (const testUrl of [imageS2Url, imageNoS2Url]) {
             try {
               const testResponse = await axios.head(`https://wiki.smite2.com${testUrl}`, {
@@ -168,41 +224,49 @@ async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
 
       // Download thumbnail if found
       if (thumbnailUrl) {
-        try {
-          // Check if file already exists
+        if (options.dryRun) {
+          console.log(`📋 Would download thumbnail: https://wiki.smite2.com${thumbnailUrl}`)
+        } else {
           try {
-            await readFile(thumbnailPath)
-            console.log(`⏭️  Thumbnail already exists for ${god.name}`)
-          } catch (_error) {
-            // File doesn't exist, download it
-            const fullThumbnailUrl = `https://wiki.smite2.com${thumbnailUrl}`
-            await downloadImage(fullThumbnailUrl, thumbnailPath)
-            downloadedThumbnails++
-          }
+            // Check if file already exists
+            try {
+              await readFile(thumbnailPath)
+              console.log(`⏭️  Thumbnail already exists for ${god.name}`)
+            } catch (_error) {
+              // File doesn't exist, download it
+              const fullThumbnailUrl = `https://wiki.smite2.com${thumbnailUrl}`
+              await downloadImage(fullThumbnailUrl, thumbnailPath)
+              downloadedThumbnails++
+            }
 
-          updatedGod.smite2ThumbnailPath = `/images/thumbnails/smite2/thumb/${filename}`
-        } catch (_error) {
-          console.warn(`⚠️  Could not download thumbnail for ${god.name}`)
+            updatedGod.smite2ThumbnailPath = `/images/gods/smite2/thumb/${filename}`
+          } catch (_error) {
+            console.warn(`⚠️  Could not download thumbnail for ${god.name}`)
+          }
         }
       }
 
       // Download full-size image if found
       if (imageUrl) {
-        try {
-          // Check if file already exists
+        if (options.dryRun) {
+          console.log(`📋 Would download full-size image: https://wiki.smite2.com${imageUrl}`)
+        } else {
           try {
-            await readFile(imagePath)
-            console.log(`⏭️  Full-size image already exists for ${god.name}`)
-          } catch (_error) {
-            // File doesn't exist, download it
-            const fullImageUrl = `https://wiki.smite2.com${imageUrl}`
-            await downloadImage(fullImageUrl, imagePath)
-            downloadedImages++
-          }
+            // Check if file already exists
+            try {
+              await readFile(imagePath)
+              console.log(`⏭️  Full-size image already exists for ${god.name}`)
+            } catch (_error) {
+              // File doesn't exist, download it
+              const fullImageUrl = `https://wiki.smite2.com${imageUrl}`
+              await downloadImage(fullImageUrl, imagePath)
+              downloadedImages++
+            }
 
-          updatedGod.imagePath = `/images/gods/smite2/${filename}`
-        } catch (_error) {
-          console.warn(`⚠️  Could not download full-size image for ${god.name}`)
+            updatedGod.imagePath = `/images/gods/smite2/card/${filename}`
+          } catch (_error) {
+            console.warn(`⚠️  Could not download full-size image for ${god.name}`)
+          }
         }
       }
 
@@ -212,13 +276,18 @@ async function downloadSmite2ImagesAndThumbnails(): Promise<void> {
       await new Promise((resolve) => setTimeout(resolve, 500))
     }
 
-    // Update gods.json
-    const jsonData = JSON.stringify(updatedGods, null, 2)
-    await writeFile(godsPath, jsonData, "utf8")
+    if (options.dryRun) {
+      console.log("\n📋 DRY RUN - gods.json was not updated")
+    } else {
+      // Update gods.json
+      const jsonData = JSON.stringify(updatedGods, null, 2)
+      await writeFile(godsPath, jsonData, "utf8")
+    }
 
     console.log("\n✅ All Smite 2 images and thumbnails download complete!")
+    const prefix = options.dryRun ? "Would download" : "Downloaded"
     console.log(
-      `📊 Downloaded: ${downloadedThumbnails} new thumbnails, ${downloadedImages} new images`
+      `📊 ${prefix}: ${downloadedThumbnails} new thumbnails, ${downloadedImages} new images`
     )
     console.log(
       `🎯 Total with Smite 2 content: ${updatedGods.filter((god) => god.smite2ThumbnailPath || god.imagePath).length}`

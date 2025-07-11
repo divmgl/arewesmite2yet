@@ -988,18 +988,6 @@
     "smite1ThumbnailPath": "/images/gods/smite1/thumb/medusa.png"
   },
   {
-    "id": 80,
-    "name": "Mercury",
-    "pantheon": "Roman",
-    "class": "Assassin",
-    "status": "not_ported",
-    "releaseDate": "2013-10-02",
-    "smite1Wiki": "https://smite.fandom.com/wiki/Mercury",
-    "smite2ThumbnailPath": "/images/gods/smite2/thumb/mercury.png",
-    "smite1CardPath": "/images/gods/smite1/card/mercury.png",
-    "smite1ThumbnailPath": "/images/gods/smite1/thumb/mercury.png"
-  },
-  {
     "id": 81,
     "name": "Merlin",
     "pantheon": "Arthurian",
@@ -1262,18 +1250,6 @@
     "smite1Wiki": "https://smite.fandom.com/wiki/Ravana",
     "smite1CardPath": "/images/gods/smite1/card/ravana.png",
     "smite1ThumbnailPath": "/images/gods/smite1/thumb/ravana.png"
-  },
-  {
-    "id": 102,
-    "name": "Scylla",
-    "pantheon": "Greek",
-    "class": "Mage",
-    "status": "not_ported",
-    "releaseDate": "2014-03-05",
-    "smite1Wiki": "https://smite.fandom.com/wiki/Scylla",
-    "smite2ThumbnailPath": "/images/gods/smite2/thumb/scylla.png",
-    "smite1CardPath": "/images/gods/smite1/card/scylla.png",
-    "smite1ThumbnailPath": "/images/gods/smite1/thumb/scylla.png"
   },
   {
     "id": 103,
@@ -1670,5 +1646,35 @@
     "portedDate": "2025-01-06",
     "smite2ThumbnailPath": "/images/gods/smite2/thumb/aladdin.png",
     "imagePath": "/images/gods/smite2/card/aladdin.png"
+  },
+  {
+    "id": 102,
+    "name": "Scylla",
+    "pantheon": "Greek",
+    "class": "Mage",
+    "status": "ported",
+    "releaseDate": "2014-03-05",
+    "smite1Wiki": "https://smite.fandom.com/wiki/Scylla",
+    "smite2Wiki": "https://wiki.smite2.com/w/Scylla",
+    "portedDate": "2025-07-02",
+    "smite2ThumbnailPath": "/images/gods/smite2/thumb/scylla.png",
+    "imagePath": "/images/gods/smite2/card/scylla.png",
+    "smite1CardPath": "/images/gods/smite1/card/scylla.png",
+    "smite1ThumbnailPath": "/images/gods/smite1/thumb/scylla.png"
+  },
+  {
+    "id": 80,
+    "name": "Mercury",
+    "pantheon": "Roman",
+    "class": "Assassin",
+    "status": "ported",
+    "releaseDate": "2013-10-02",
+    "smite1Wiki": "https://smite.fandom.com/wiki/Mercury",
+    "smite2Wiki": "https://wiki.smite2.com/w/Mercury",
+    "portedDate": "2025-07-01",
+    "smite2ThumbnailPath": "/images/gods/smite2/thumb/mercury.png",
+    "imagePath": "/images/gods/smite2/card/mercury.png",
+    "smite1CardPath": "/images/gods/smite1/card/mercury.png",
+    "smite1ThumbnailPath": "/images/gods/smite1/thumb/mercury.png"
   }
 ]

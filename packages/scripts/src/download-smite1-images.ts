@@ -182,6 +182,7 @@ async function downloadSmite1Images(): Promise<void> {
         "Baba Yaga": "BabaYaga",
         "Bake Kujira": "BakeKujira",
         "Princess Bari": "PrincessBari",
+        "Terra": "Terra",
       }
 
       const specialName = specialNames[god.name]
@@ -215,10 +216,7 @@ async function downloadSmite1Images(): Promise<void> {
 
             if (
               godNameVariationsLower.some(
-                (variation) =>
-                  variation === iconNamePart ||
-                  iconNamePart.includes(variation) ||
-                  variation.includes(iconNamePart)
+                (variation) => variation === iconNamePart
               )
             ) {
               thumbnailUrl = fullUrl
@@ -243,10 +241,7 @@ async function downloadSmite1Images(): Promise<void> {
 
             if (
               godNameVariationsLower.some(
-                (variation) =>
-                  variation === cardNamePart ||
-                  cardNamePart.includes(variation) ||
-                  variation.includes(cardNamePart)
+                (variation) => variation === cardNamePart
               )
             ) {
               cardUrl = fullUrl
