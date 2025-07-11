@@ -10,8 +10,11 @@ export function StatsCards({ gods }: StatsCardsProps) {
   const portedGods = gods.filter((god) => god.status === "ported").length
   const exclusiveGods = gods.filter((god) => god.status === "exclusive").length
   const notPortedGods = gods.filter((god) => god.status === "not_ported").length
-  const portedPercentage = Math.round((portedGods / totalGods) * 100)
-  const notPortedPercentage = Math.round((notPortedGods / totalGods) * 100)
+  
+  // Calculate percentages based on gods that can be ported (exclude exclusives)
+  const portableGods = totalGods - exclusiveGods
+  const portedPercentage = Math.round((portedGods / portableGods) * 100)
+  const notPortedPercentage = Math.round((notPortedGods / portableGods) * 100)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
