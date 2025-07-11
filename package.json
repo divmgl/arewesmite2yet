@@ -1,0 +1,31 @@
+{
+  "name": "arewesmite2yet",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "Dexter Miguel",
+  "packageManager": "bun@1.2.9",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "dependencies": {
+    "@tanstack/react-table": "^8.21.3",
+    "date-fns": "^4.1.0"
+  },
+  "scripts": {
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "lint": "turbo lint",
+    "deploy": "turbo deploy",
+    "dev": "turbo dev"
+  }
+}

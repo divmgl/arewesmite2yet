@@ -1,0 +1,56 @@
+---
+import gods from '@arewesmite2yet/data/gods.json';
+import type { God } from '@arewesmite2yet/data/types';
+import { GodsDataTable } from '../components/GodsDataTable';
+import { StatsCards } from '../components/StatsCards';
+import { Heart, Linkedin, Github } from 'lucide-react';
+import '../styles/globals.css';
+
+const typedGods: God[] = gods;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montaga:wght@400&display=swap" rel="stylesheet">
+		<title>Are We Smite 2 Yet?</title>
+	</head>
+	<body class="min-h-screen bg-background text-foreground tracking-tight">
+		<div class="container mx-auto p-6">
+			<div class="flex justify-between items-center mb-6">
+				<h1 class="text-5xl font-normal text-orange-400 font-serif">Are We SMITE 2 Yet?</h1>
+				<div class="flex items-center gap-4">
+					<div class="flex items-center gap-2 text-sm text-muted-foreground">
+						<span>Made with <Heart className="h-4 w-4 text-red-500 inline" /> by <span class="font-semibold">Dexter Miguel</span></span>
+					</div>
+					<a href="https://www.linkedin.com/in/dextermiguel/" target="_blank" rel="noopener noreferrer" class="text-muted-foreground hover:text-foreground transition-colors">
+						<Linkedin className="h-6 w-6" />
+					</a>
+					<a href="https://github.com/divmgl/arewesmite2yet" target="_blank" rel="noopener noreferrer" class="text-muted-foreground hover:text-foreground transition-colors">
+						<Github className="h-6 w-6" />
+					</a>
+				</div>
+			</div>
+			
+			<StatsCards gods={typedGods} client:load />
+			
+			<GodsDataTable data={typedGods} client:load />
+			
+			<!-- Disclaimer -->
+			<div class="mt-16 pt-8 border-t border-border">
+				<div class="text-center text-xs text-muted-foreground">
+					<p>
+						This website is a fan-made project and is not affiliated with Hi-Rez Studios or Titan Forge Games. 
+						All game content, including god names, artwork, and data, is the intellectual property of Hi-Rez Studios. 
+						SMITE and SMITE 2 are trademarks of Hi-Rez Studios, Inc.
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

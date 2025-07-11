@@ -1,0 +1,71 @@
+[
+  {
+    "name": "Arthurian",
+    "iconPath": "/images/pantheons/arthurian.png"
+  },
+  {
+    "name": "Babylonian",
+    "iconPath": "/images/pantheons/babylonian.png"
+  },
+  {
+    "name": "Celtic",
+    "iconPath": "/images/pantheons/celtic.png"
+  },
+  {
+    "name": "Chinese",
+    "iconPath": "/images/pantheons/chinese.png"
+  },
+  {
+    "name": "Egyptian",
+    "iconPath": "/images/pantheons/egyptian.png"
+  },
+  {
+    "name": "Great Old Ones"
+  },
+  {
+    "name": "Greek",
+    "iconPath": "/images/pantheons/greek.png"
+  },
+  {
+    "name": "Hindu",
+    "iconPath": "/images/pantheons/hindu.png"
+  },
+  {
+    "name": "Japanese",
+    "iconPath": "/images/pantheons/japanese.png"
+  },
+  {
+    "name": "Korean"
+  },
+  {
+    "name": "Maya",
+    "iconPath": "/images/pantheons/maya.png"
+  },
+  {
+    "name": "Norse",
+    "iconPath": "/images/pantheons/norse.png"
+  },
+  {
+    "name": "Polynesian",
+    "iconPath": "/images/pantheons/polynesian.png"
+  },
+  {
+    "name": "Roman",
+    "iconPath": "/images/pantheons/roman.png"
+  },
+  {
+    "name": "Slavic",
+    "iconPath": "/images/pantheons/slavic.png"
+  },
+  {
+    "name": "Tales of Arabia"
+  },
+  {
+    "name": "Voodoo",
+    "iconPath": "/images/pantheons/voodoo.png"
+  },
+  {
+    "name": "Yoruba",
+    "iconPath": "/images/pantheons/yoruba.png"
+  }
+]

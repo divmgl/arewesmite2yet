@@ -1,0 +1,16 @@
+{
+  "extends": "@arewesmite2yet/configs/tsconfig.json",
+  "compilerOptions": {
+    // Additional strict flags for scripts
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "allowJs": true,
+    "lib": ["ESNext"],
+    "jsx": "react-jsx",
+    "moduleDetection": "force"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}

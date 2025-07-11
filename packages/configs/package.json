@@ -1,0 +1,15 @@
+{
+  "name": "@arewesmite2yet/configs",
+  "version": "1.0.0",
+  "description": "Shared configuration files for the arewesmite2yet monorepo",
+  "private": true,
+  "main": "tsconfig.json",
+  "files": [
+    "*.json"
+  ],
+  "scripts": {
+    "typecheck": "echo 'No TypeScript files to check in configs package'",
+    "lint": "echo 'No files to lint in configs package'",
+    "build": "echo 'No build needed for configs package'"
+  }
+}

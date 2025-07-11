@@ -1,0 +1,12 @@
+{
+  "extends": "@arewesmite2yet/configs/tsconfig.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "../web/**/*"
+  ]
+}
