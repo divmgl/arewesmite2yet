@@ -24,8 +24,8 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Deploy (lint, typecheck, build)
-        run: bun run deploy
+      - name: Predeploy (lint, typecheck, build)
+        run: bun turbo predeploy
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
