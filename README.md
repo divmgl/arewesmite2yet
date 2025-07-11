@@ -1,5 +1,7 @@
 # Are We SMITE 2 Yet?
 
+[![Deploy Status](https://github.com/divmgl/arewesmite2yet/actions/workflows/deploy.yml/badge.svg)](https://github.com/divmgl/arewesmite2yet/actions/workflows/deploy.yml)
+
 A website that tracks the porting status of gods from SMITE 1 to SMITE 2.
 
 [arewesmite2yet.com](https://arewesmite2yet.com)
